@@ -1,31 +1,20 @@
-const { ApolloServer } = require ('@apollo/server');
-const { startStandaloneServer } = require ('@apollo/server/standalone');
+const { ApolloServer } = require('@apollo/server');
+const { startStandaloneServer } = require('@apollo/server/standalone');
 
-const typeDefs = `#graphql
-  
-  type Book {
-    title: String
-    author: String
-  }
-  type Query {
-    books: [Book]
-  }
-`;
-const resolvers = {
-    Query: {
-      books: () => books,
-    },
-  };
-  
+const { typeDefs: typeDefsUser} = require('./schemas/User')
+const {resolvers: resolversUser} = require('./resolvers/user')
+
+
+//------SETUP LISTENER----------- 
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    introspection: true
+  typeDefs: [typeDefsUser],
+  resolvers: [resolversUser],
+  introspection: true
+});
+
+(async () => {
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: 4000 },
   });
-  
- (async ()=>{
-     const { url } = await startStandaloneServer(server, {
-       listen: { port: 4000 },
-     });
-     console.log(`🚀  Server ready at: ${url}`);  
- })();
+  console.log(`🚀  Server ready at: ${url}`);
+})();
