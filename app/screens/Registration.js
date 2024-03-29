@@ -2,9 +2,9 @@ import { View, Text, Button, TouchableOpacity,Image } from 'react-native'
 import { StyleSheet } from "react-native";
 import { TextInput } from "react-native";
 import images from '../res/images';
-// import LoginScreen from './LoginScreen1'
+// import Registration from './LoginScreen1'
 
-export default function LoginScreen({ navigation }) {
+export default function Registration({ navigation }) {
   return (
     <View style={Styles.container}>
       <View style={Styles.logoContainer}>
