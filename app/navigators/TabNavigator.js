@@ -5,10 +5,16 @@ import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SearchScreen from '../screens/SearchScreen';
 import AddPostScreen from '../screens/AddPostScreen';
+import { useContext } from 'react';
+import AuthContext from '../context/AuthContext';
+import * as SecureStore from 'expo-secure-store'
+
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
+  const { setIsSignedIn } = useContext(AuthContext);
+
     return (
         <Tab.Navigator
             screenOptions={
@@ -17,12 +23,14 @@ export default function TabNavigator() {
                     headerTitle: `Instagram`,
                     headerRight: () => (
                         <AntDesign
-                            name="hearto"
+                            name="logout"
                             size={25}
                             style={{
                                 display: 'flex',
                                 padding: 10
                             }}
+                            onPress={async()=>{SecureStore.deleteItemAsync('accessToken');
+                            setIsSignedIn(false)}}
                         />
                     ),
                     headerLeft: () => (
@@ -81,6 +89,21 @@ export default function TabNavigator() {
                     tabBarIcon: ({ color, size }) => (
                         <AntDesign
                             name="plussquareo"
+                            color={color}
+                            size={size}
+                        />
+                    )
+                }}
+            />
+            <Tab.Screen
+                name="like"
+                component={AddPostScreen}
+                options={{
+                    title: "",
+                    tabBarActiveTintColor: 'black',
+                    tabBarIcon: ({ color, size }) => (
+                        <AntDesign
+                            name="hearto"
                             color={color}
                             size={size}
                         />

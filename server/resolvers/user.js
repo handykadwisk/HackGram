@@ -67,7 +67,7 @@ const resolvers = {
             if (!validPassword) throw new Error("Username / Password Invalid");
       
             const token = {
-              accessToken: signToken({ id: user._id, username: user.username }),
+              accessToken: signToken({ id: user._id, username: user.username,email:user.email }),
             };
       
             return token;

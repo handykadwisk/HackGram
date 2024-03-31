@@ -10,6 +10,7 @@ const typeDefsPost = `#graphql
     tags: [String]
     imgUrl: String!
     authorId: ID!
+    author: [Author]
     comments: [Comment]
     likes: [Like]
     createdAt: Date!
@@ -27,6 +28,13 @@ const typeDefsPost = `#graphql
     username: String!
     createdAt: Date!
     updatedAt: Date!
+  }
+  type Author {
+    _id: ID!
+    username: String!
+    email: String!
+    name: String!
+
   }
 
   type Query {

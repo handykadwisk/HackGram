@@ -1,8 +1,10 @@
+const { ObjectId } = require('mongodb');
 const Post = require('../models/post');
 const resolversPost = {
     Query: {
         posts: async (_, __, { auth }) => {
             auth();
+            // console.log(auth(),'<<<<<<<<<<<<');
             try {
                 const posts = await Post.findAll();
                 return posts;
@@ -28,14 +30,16 @@ const resolversPost = {
             auth();
             const currentUser = auth();
             try {
+                // console.log(currentUser,'<<<<<<< ini di resolvers post');
+                const authorId = new ObjectId(String(currentUser.id));
                 if (!content) throw new Error("Content is required");
                 if (!imgUrl) throw new Error("Image Url is required");
-                if (!currentUser.id) throw new Error("Author Id is required");
+                if (!authorId) throw new Error("Author Id is required");
                 const newPost = {
                     content,
                     tags,
                     imgUrl,
-                    authorId: currentUser.id,
+                    authorId,
                     comments: [],
                     likes: [],
                     createdAt: new Date().toISOString(),

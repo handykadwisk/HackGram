@@ -1,26 +1,67 @@
-import { View, Text, Button, TouchableOpacity,Image } from 'react-native'
+import { View, Text, Button, TouchableOpacity, Image } from 'react-native'
 import { StyleSheet } from "react-native";
 import { TextInput } from "react-native";
+import { ActivityIndicator } from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 import images from '../res/images';
+import { gql,useMutation, useQuery } from '@apollo/client';
+import { useContext, useState } from 'react';
+import * as SecureStore from 'expo-secure-store'
+import AuthContext from '../context/AuthContext';
 // import LoginScreen from './LoginScreen1'
+const LOGIN = gql`
+  mutation login($username: String!, $password: String!) {
+        login(username: $username, password: $password) {
+            accessToken
+        }
+    }
+`
 
 export default function LoginScreen({ navigation }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const { setIsSignedIn } = useContext(AuthContext);
+  const [login, { error, loading, data }] = useMutation(LOGIN, {
+    onCompleted: async (data) => {
+      await SecureStore.setItemAsync('accessToken', data?.login.accessToken);
+      setIsSignedIn(true);
+    },
+  });
+
+  async function handleSubmit() {
+    try {
+      await login({ variables: { username, password } });
+    } catch (err) {
+      console.log(err.message, "<<<<<< ini login");
+      alert(err.message);
+    }
+  }
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
   return (
     <View style={Styles.container}>
       <View style={Styles.logoContainer}>
         <Image
           source={images.logoBlack}
-          style={{height: 70, resizeMode: 'contain'}}
+          style={{ height: 70, resizeMode: 'contain' }}
         />
       </View>
       <View style={Styles.userNameContainer}>
         <TextInput
+          onChangeText={setUsername}
+          value={username}
           style={Styles.userNameInput}
-          placeholder="Email"
+          placeholder="Username"
         />
       </View>
       <View style={Styles.passwordContainer}>
-        <TextInput style={Styles.passwordInput} placeholder="Password" />
+        <TextInput style={Styles.passwordInput} placeholder="Password" secureTextEntry={true} onChangeText={setPassword}
+          value={password} />
       </View>
       <View style={Styles.forgotPasswordContainer}>
         <TouchableOpacity>
@@ -29,36 +70,22 @@ export default function LoginScreen({ navigation }) {
       </View>
       <TouchableOpacity
         style={Styles.loginContainer}
-        onPress={() => _signInAsync}>
+        onPress={handleSubmit}
+        // onPress={() => setIsSignedIn(true)}
+        >
         <Text style={Styles.loginText}>Login</Text>
       </TouchableOpacity>
-      <View style={{alignItems: 'center', marginTop: 20}}>
-        <Text style={{color: 'gray', fontSize: 12}}>Don't have account</Text>
+      <View style={{ alignItems: 'center', marginTop: 20 }}>
+        <Text style={{ color: 'gray', fontSize: 12 }}>Don't have account</Text>
         <TouchableOpacity>
-          <Text style={Styles.forgotPasswordText}>SignUp</Text>
+          <Text style={Styles.forgotPasswordText} onPress={() => navigation.navigate("Regis")}>SignUp</Text>
         </TouchableOpacity>
       </View>
     </View>
-    
+
   )
 }
 
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: "gray",
-    padding: 10,
-    borderRadius: 5,
-  },
-
-
-
-  inputGroup: {
-    gap: 5,
-  },
-});
 
 const Styles = StyleSheet.create({
   container: {
@@ -97,7 +124,7 @@ const Styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     marginBottom: 20,
   },
-  passwordInput: {marginStart: 10},
+  passwordInput: { marginStart: 10 },
   forgotPasswordContainer: {
     alignItems: 'flex-end',
     marginEnd: 20,
