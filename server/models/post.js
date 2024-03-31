@@ -26,11 +26,17 @@ class Post {
             as: "author",
           },
         },
+        {
+          $unwind: {
+            path: "$author",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
       ];
       const cursor = this.postCollection().aggregate(agg);
       const result = await cursor.toArray();
+      
       await redis.set("posts", JSON.stringify(result));
-      console.log(result);
       return result;
     }
   }

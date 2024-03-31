@@ -29,16 +29,24 @@ function HomeScreen({ navigation }) {
   }
   if (error) {
     return <Text>Error: {error.message}</Text>;
-  } 
+  }
   const { setIsSignedIn } = useContext(AuthContext);
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
-        {data?.posts.map((post,idx)=>{
-
-        return<Card key={idx} post={post} id={post._id} navigate={navigation.navigate}/>
+        {data?.posts.map((post, idx) => {
+          return (
+            <Card
+              key={idx}
+              post={post}
+              id={post._id}
+              navigate={navigation.navigate}
+            />
+          );
         })}
       </ScrollView>
     </View>

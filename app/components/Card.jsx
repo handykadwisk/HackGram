@@ -2,7 +2,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
 
-export default function Card({post}) {
+export default function Card({post,idx}) {
  
   // console.log(post.author[0],'<<<<<<<<<');
   // console.log(post.author.map((el)),'<<<<<<<<<');
@@ -14,7 +14,7 @@ export default function Card({post}) {
   // console.log(author,'=================ini di card');
   // {post?.author.map((author,idx)=>{
     // })}
-    console.log(post.author[0],'<<<<<<<<<');
+    console.log(post.author.name,'<<<<<<<<< Author');
     return (
       <>
     
@@ -23,15 +23,15 @@ export default function Card({post}) {
         <View style={styles.header}>
           <Image
             source={{
-              uri: "https://images.pexels.com/photos/16903039/pexels-photo-16903039/free-photo-of-pemandangan-batu-bukit-sungai.jpeg?auto=compress&cs=tinysrgb&w=600",
+              uri: "https://source.unsplash.com/random/300x200?sig=${post.id}",
             }}
             style={styles.avatar}
           />
-          <Text style={styles.username}>{post.author.name}a</Text>
+          <Text style={styles.username}>{post.author.name}</Text>
         </View>
         <Image
           source={{
-            uri: "https://images.pexels.com/photos/16903039/pexels-photo-16903039/free-photo-of-pemandangan-batu-bukit-sungai.jpeg?auto=compress&cs=tinysrgb&w=600",
+            uri: "https://source.unsplash.com/random/300x200?sig=${indext}",
           }}
           style={styles.image}
         />
@@ -48,7 +48,7 @@ export default function Card({post}) {
           </View>
           <Text style={styles.caption}>{post.content} </Text>
           <Text style={styles.desc}>
-            Description of the photo will be here.
+            {post.tags}
           </Text>
           <Text style={styles.date}>{post.createdAt}</Text>
         </View>
