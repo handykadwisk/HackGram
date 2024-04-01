@@ -1,29 +1,14 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { useState } from "react";
 
-export default function Card({post,idx}) {
- 
-  // console.log(post.author[0],'<<<<<<<<<');
-  // console.log(post.author.map((el)),'<<<<<<<<<');
-  // const [isLiked, setIsLiked] = useState(false);
-  // const [isCommented, setIsCommented] = useState(false);
-  // const [isShared, setIsShared] = useState(false);
-  // const [isSaved, setIsSaved] = useState(false);
-  // const [author, setAuthor]=useState(post.author[0]);
-  // console.log(author,'=================ini di card');
-  // {post?.author.map((author,idx)=>{
-    // })}
-    console.log(post.author.name,'<<<<<<<<< Author');
-    return (
-      <>
-    
-    
+export default function Card({ post, idx }) {
+  return (
+    <>
       <View style={styles.card}>
         <View style={styles.header}>
           <Image
             source={{
-              uri: "https://source.unsplash.com/random/300x200?sig=${post.id}",
+              uri: "https://source.unsplash.com/random/300x200?sig=${post._id}",
             }}
             style={styles.avatar}
           />
@@ -31,7 +16,7 @@ export default function Card({post,idx}) {
         </View>
         <Image
           source={{
-            uri: "https://source.unsplash.com/random/300x200?sig=${indext}",
+            uri: "https://source.unsplash.com/random/300x200?sig=${idx++}",
           }}
           style={styles.image}
         />
@@ -47,13 +32,10 @@ export default function Card({post,idx}) {
             </TouchableOpacity>
           </View>
           <Text style={styles.caption}>{post.content} </Text>
-          <Text style={styles.desc}>
-            {post.tags}
-          </Text>
+          <Text style={styles.desc}>{post.tags}</Text>
           <Text style={styles.date}>{post.createdAt}</Text>
         </View>
       </View>
-     
     </>
   );
 }

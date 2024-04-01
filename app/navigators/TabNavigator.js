@@ -8,6 +8,7 @@ import AddPostScreen from '../screens/AddPostScreen';
 import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 import * as SecureStore from 'expo-secure-store'
+import LikeScreen from '../screens/LikeScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -97,7 +98,7 @@ export default function TabNavigator() {
             />
             <Tab.Screen
                 name="like"
-                component={AddPostScreen}
+                component={LikeScreen}
                 options={{
                     title: "",
                     tabBarActiveTintColor: 'black',

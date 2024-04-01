@@ -19,6 +19,11 @@ const resolvers = {
       
             return user;
           },
+          myProfile: async (_, __, { auth }) => {
+            const data = auth();
+            const myProfile = await User.myProfile(data.id);
+            return myProfile;
+          },
     },
     Mutation: {
         register: async (_, { name, username, email, password }) => {

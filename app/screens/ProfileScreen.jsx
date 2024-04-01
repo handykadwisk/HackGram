@@ -31,47 +31,27 @@ const data2 = [
   // {key: '14'},
 ];
 const profil = gql`
-  query Posts {
-    myProfile {
+query Query {
+  myProfile {
+    _id
+    name
+    username
+    email
+    password
+    followerDetail {
       _id
       name
       username
       email
-      password
-      followerDetail {
-        _id
-        name
-        username
-        email
-      }
-      followingDetail {
-        _id
-        name
-        username
-        email
-      }
-      userPost {
-        _id
-        content
-        tags
-        imgUrl
-        authorId
-        comments {
-          content
-          username
-          createdAt
-          updatedAt
-        }
-        likes {
-          username
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
-      }
+    }
+    followingDetail {
+      _id
+      name
+      username
+      email
     }
   }
+}
 `;
 
 export default function ProfileScreen() {
@@ -120,7 +100,7 @@ export default function ProfileScreen() {
     );
   };
 
-  console.log(data.User, "<<<DATA");
+  console.log(data, "<<<DATA");
   // console.log(data.myProfile, "<<< ????");
   return (
     <FlatList
@@ -148,7 +128,7 @@ export default function ProfileScreen() {
                 <View style={Styles.container3}>
                   <TouchableOpacity>
                     <Text style={Styles.numberContainer}>
-                      {data.myProfile.userPost.length}
+                      {/* {data.myProfile.post.length} */}0
                     </Text>
                     <Text style={Styles.text}>Posts</Text>
                   </TouchableOpacity>
